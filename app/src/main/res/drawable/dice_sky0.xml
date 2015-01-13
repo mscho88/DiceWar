@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="false">
+    <item android:drawable="@drawable/dice_sky_two" android:duration="30" />
+    <item android:drawable="@drawable/dice_sky_one" android:duration="30" />
+    <item android:drawable="@drawable/dice_sky_four" android:duration="30" />
+    <item android:drawable="@drawable/dice_sky_six" android:duration="30" />
+    <item android:drawable="@drawable/dice_sky_three" android:duration="30" />
+    <item android:drawable="@drawable/dice_sky_five" android:duration="30" />
+</animation-list>
