@@ -2,10 +2,12 @@ package com.example.jment.dicewar;
 
 import android.app.Activity;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -70,7 +72,7 @@ public class StartGame extends Activity implements View.OnClickListener {
             drawMap();
         }else if(v.getId() == getApplicationContext().getResources().getIdentifier("2000", "id", getPackageName())){
             disableEvent();
-            execComputerTurn();
+            executeComputerTurn();
             enableEvent();
         }
     }
@@ -499,6 +501,7 @@ public class StartGame extends Activity implements View.OnClickListener {
     }
 
     private void enableEvent(){
+
         for(int i = 0; i < map_height; i++){
             for(int j = 0; j < map_width; j++){
                 if(map_model.get(i)[j].getPlayer() == 1) {
@@ -541,7 +544,7 @@ public class StartGame extends Activity implements View.OnClickListener {
                                     if(rollDice()){
                                         prev_view.setBackgroundResource(R.drawable.red_field_big);
                                         cur_view.setBackgroundResource(R.drawable.red_field_big);
-                                        map_model.get(i)[j].setDice_num();
+                                        //map_model.get(i)[j].setDice_num();
                                         //map_model.get
                                         prev_view = null;
                                         cur_view = null;
@@ -593,7 +596,7 @@ public class StartGame extends Activity implements View.OnClickListener {
     private boolean rollDice() {
         Random r1 = new Random();
         Handler mHandler = new Handler();
-        Runnable mRunnable = new Runnable() {
+        Runnable mRunnable = new Runnable(){
             public void run() {
                 TextView mid_txt = (TextView) findViewById(R.id.textView);
                 mid_txt.setText(" VS ");
@@ -644,6 +647,25 @@ public class StartGame extends Activity implements View.OnClickListener {
         public int a;
         public void run(){
 
+        }
+    }
+
+    private int isWin(){
+        int user_exists = 0;
+        for(int i = 0; i < map_height; i++){
+            for(int j = 0; j < map_width; j++){
+                if(map_model.get(i)[j].getPlayer() == 1){
+                    user_exists++;
+                }
+            }
+        }
+
+        if(user_exists == 0){
+            return 1; // lost
+        }else if(user_exists == max_field){
+            return 2; // won
+        }else{
+            return 3; // still playing
         }
     }
 
@@ -784,10 +806,38 @@ public class StartGame extends Activity implements View.OnClickListener {
     }
 
     private void disableEvent(){
-
+        for(int i = 0; i < map_height; i++){
+            for(int j = 0; j < map_width; j++){
+                ImageView iv = getViewFromMapModel(i + 1, j + 1);
+                iv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {}
+                });
+            }
+        }
     }
 
-    private void execComputerTurn(){
+    private ImageView getViewFromMapModel(int i, int j){
+        int drawable = getApplicationContext().getResources().getIdentifier("row" + i + "col" + j, "id", getPackageName());
+        return ((ImageView) findViewById(drawable));
+    }
 
+    private void executeComputerTurn(){
+        Button btn = (Button) findViewById(getApplicationContext().getResources().getIdentifier("2000", "id", getPackageName()));
+        btn.setEnabled(false);
+
+        for(int i = 2; i <= MainActivity.player_num; i++){
+            for(int j = 0; j < map_height; j++){
+                for(int k = 0; k < map_width; k++){
+                    if(map_model.get(j)[k].getPlayer() == i){
+                        //findAvailableAdjacent(i, j, k);
+                    }
+                }
+            }
+        }
+        btn.setEnabled(true);
+    }
+    private Field findAvailableAdjacent(int player, int i, int j){
+        return new Field();
     }
 }
